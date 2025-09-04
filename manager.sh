@@ -196,8 +196,6 @@ submenu_clusters() {
     *) echo "Invalid option." ;;
     esac
 
-    echo ""
-    read -rp "Press ENTER to continue..." pause
   done
 }
 
@@ -222,6 +220,4 @@ while true; do
   *) echo "Invalid option." ;;
   esac
 
-  echo ""
-  read -p "Press ENTER to continue..." pause
 done
