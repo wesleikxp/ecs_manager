@@ -55,7 +55,13 @@ menu_principal() {
   echo -e "${RESET}"
   center_text "Environment: ${CURRENT_ENVIRONMENT:-${GREEN}}${RESET} Cluster: ${CURRENT_CLUSTER:-${GREEN}}${RESET} Service: ${CURRENT_SERVICE:-${GREEN}}${RESET}"
   center_text "---------------------------------------------"
-  center_text "${CYAN}(1)${RESET} Select environment ${CYAN}(0)${RESET} Exit"
+  center_text "${CYAN}(1)${RESET} Select environment"
+  
+  if [ -n "$CURRENT_ENVIRONMENT" ]; then
+    center_text "${CYAN}(2)${RESET} Manage clusters"
+  fi
+
+  center_text "${CYAN}(0)${RESET} Exit"
   center_text "---------------------------------------------"
 }
 
@@ -206,6 +212,8 @@ while true; do
     echo -e "2) ${RED}PRD${RESET}"
     read -rp "Enter your option: " ENV
     set_profile $ENV
+
+    submenu_clusters
     ;;
   0)
     center_text "Exiting..."
