@@ -18,46 +18,55 @@ PROFILE_PRD="prd"
 CURRENT_ENVIRONMENT=""
 CURRENT_CLUSTER=""
 CURRENT_SERVICE=""
+# =============================================
+
+center_text() {
+  local term_width=$(tput cols)
+  local text="$1"
+
+  local plain_text=$(echo -e "$text" | sed 's/\x1b\[[0-9;]*m//g')
+  local padding=$(((term_width - ${#plain_text}) / 2))
+
+  printf "%*s%s\n" $padding "" "$(echo -e "$text")"
+}
 
 menu_principal() {
   clear
   echo -e "${CYAN}${BOLD}"
-  echo "╔═══════════════════════════════════════════╗"
-  echo "║          WELCOME TO ECS MANAGER           ║"
-  echo "║                                           ║"
-  echo "║                  by KXP                   ║"
-  echo "╚═══════════════════════════════════════════╝"
+  center_text "╔═══════════════════════════════════════════╗"
+  center_text "║          WELCOME TO ECS MANAGER           ║"
+  center_text "║                                           ║"
+  center_text "║                  by KXP                   ║"
+  center_text "╚═══════════════════════════════════════════╝"
   echo -e "${RESET}"
-  echo -e "Current environment: ${CURRENT_ENVIRONMENT:-${GREEN}Default}${RESET}"
-  echo -e "Current cluster: ${CURRENT_CLUSTER:-${GREEN}Default}${RESET}"
-  echo -e "Current service: ${CURRENT_SERVICE:-${GREEN}Default}${RESET}"
-  echo "---------------------------------------------"
-  echo "Select the environment:"
-  echo "1) Select environment"
-  echo "2) Manager ECS Cluster"
-  echo "0) Exit"
-  echo "---------------------------------------------"
+  center_text "Current environment: ${CURRENT_ENVIRONMENT:-${GREEN}Default}${RESET}"
+  center_text "Current cluster: ${CURRENT_CLUSTER:-${GREEN}Default}${RESET}"
+  center_text "Current service: ${CURRENT_SERVICE:-${GREEN}Default}${RESET}"
+  center_text "---------------------------------------------"
+  #  echo "Select the environment:"
+  center_text "${CYAN}1) Select environment${RESET}    ${CYAN}2) Manager ECS Cluster${RESET}    ${CYAN}0) Exit${RESET}"
+  center_text "---------------------------------------------"
 }
 
 menu_clusters() {
   clear
   echo -e "${CYAN}${BOLD}"
-  echo "╔═══════════════════════════════════════════╗"
-  echo "║          WELCOME TO ECS MANAGER           ║"
-  echo "║                                           ║"
-  echo "║                  by KXP                   ║"
-  echo "╚═══════════════════════════════════════════╝"
+  center_text "╔═══════════════════════════════════════════╗"
+  center_text "║          WELCOME TO ECS MANAGER           ║"
+  center_text "║                                           ║"
+  center_text "║                  by KXP                   ║"
+  center_text "╚═══════════════════════════════════════════╝"
   echo -e "${RESET}"
-  echo -e "Current environment: ${CURRENT_ENVIRONMENT:-${GREEN}Default}${RESET}"
-  echo -e "Current cluster: ${CURRENT_CLUSTER:-${GREEN}Default}${RESET}"
-  echo -e "Current service: ${CURRENT_SERVICE:-${GREEN}Default}${RESET}"
-  echo "-------------------------------------------"
-  echo "1) List ECS cluster"
-  echo "2) List cluster services"
-  echo "3) List tasks"
-  echo "4) Execute command into container"
-  echo "5) Return to principal menu"
-  echo "-------------------------------------------"
+  center_text "Current environment: ${CURRENT_ENVIRONMENT:-${GREEN}Default}${RESET}"
+  center_text "Current cluster: ${CURRENT_CLUSTER:-${GREEN}Default}${RESET}"
+  center_text "Current service: ${CURRENT_SERVICE:-${GREEN}Default}${RESET}"
+  center_text "-------------------------------------------"
+  center_text "1) List ECS cluster"
+  center_text "2) List cluster services"
+  center_text "3) List tasks"
+  center_text "4) Execute command into container"
+  center_text "5) Return to principal menu"
+  center_text "-------------------------------------------"
 }
 
 set_profile() {
@@ -67,14 +76,14 @@ set_profile() {
     CURRENT_ENVIRONMENT="${YELLOW}HML${RESET}"
     CURRENT_CLUSTER=""
     CURRENT_SERVICE=""
-    echo -e "${GREEN}[INFO]${RESET} HML credentials successfully configured!"
+    center_text "${GREEN}[INFO]${RESET} HML credentials successfully configured!"
     ;;
   2)
     export AWS_PROFILE=$PROFILE_PRD
     CURRENT_ENVIRONMENT="${RED}PRD${RESET}"
     CURRENT_CLUSTER="${RED}${RESET}"
     CURRENT_SERVICE="${RED}${RESET}"
-    echo -e "${GREEN}[INFO]${RESET} PRD credentials successfully configured!"
+    center_text "${GREEN}[INFO]${RESET} PRD credentials successfully configured!"
     ;;
   *)
     echo "Invalid option."
@@ -83,7 +92,7 @@ set_profile() {
 }
 
 select_cluster() {
-  echo -e "${GREEN}[INFO]${RESET} Searching availables cluster..."
+  center_text "${GREEN}[INFO]${RESET} Searching availables cluster..."
   CLUSTERS=($(aws ecs list-clusters --query "clusterArns[]" --output text | sed 's#.*/##g'))
 
   if [ ${#CLUSTERS[@]} -eq 0 ]; then
