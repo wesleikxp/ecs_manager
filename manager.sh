@@ -53,7 +53,7 @@ menu_principal() {
   center_text "║                  by KXP                   ║"
   center_text "╚═══════════════════════════════════════════╝"
   echo -e "${RESET}"
-  center_text "Environment: ${CURRENT_ENVIRONMENT:-${GREEN}}${RESET} Cluster: ${CURRENT_CLUSTER:-${GREEN}}${RESET} Service: ${CURRENT_SERVICE:-${GREEN}}${RESET}"
+  center_text "Environment: ${CURRENT_ENVIRONMENT:-} Cluster: ${CURRENT_CLUSTER:-} Service: ${CURRENT_SERVICE:-}"
   center_text "---------------------------------------------"
   center_text "${CYAN}(1)${RESET} Select environment"
   
@@ -74,7 +74,7 @@ menu_clusters() {
   center_text "║                  by KXP                   ║"
   center_text "╚═══════════════════════════════════════════╝"
   echo -e "${RESET}"
-  center_text "Environment: ${CURRENT_ENVIRONMENT:-${GREEN}}${RESET} Cluster: ${CURRENT_CLUSTER:-${GREEN}}${RESET} Service: ${CURRENT_SERVICE:-${GREEN}}${RESET}"
+  center_text "Environment: ${CURRENT_ENVIRONMENT} Cluster: ${CURRENT_CLUSTER} Service: ${CURRENT_SERVICE}"
   center_text "-------------------------------------------"
   center_text "${CYAN}(1)${RESET} Cluster ${CYAN}(2)${RESET} Services ${CYAN}(3)${RESET} Tasks ${CYAN}(4)${RESET} Command ${CYAN}(5)${RESET} Return"
   center_text "-------------------------------------------"
@@ -84,16 +84,16 @@ set_profile() {
   case $1 in
   1)
     export AWS_PROFILE=$PROFILE_HML
-    CURRENT_ENVIRONMENT="${YELLOW}HML${RESET}"
-    CURRENT_CLUSTER=""
-    CURRENT_SERVICE=""
+    CURRENT_ENVIRONMENT="${CYAN}HML${RESET}"
+    CURRENT_CLUSTER="${CYAN}Not selected${RESET}"
+    CURRENT_SERVICE="${CYAN}Not selected${RESET}"
     center_text "${GREEN}[INFO]${RESET} HML credentials successfully configured!"
     ;;
   2)
     export AWS_PROFILE=$PROFILE_PRD
-    CURRENT_ENVIRONMENT="${RED}PRD${RESET}"
-    CURRENT_CLUSTER="${RED}${RESET}"
-    CURRENT_SERVICE="${RED}${RESET}"
+    CURRENT_ENVIRONMENT="${CYAN}PRD${RESET}"
+    CURRENT_CLUSTER="${CYAN}Not selected${RESET}"
+    CURRENT_SERVICE="${CYAN}Not selected${RESET}"
     center_text "${GREEN}[INFO]${RESET} PRD credentials successfully configured!"
     ;;
   *)
@@ -205,10 +205,9 @@ while true; do
 
   case $OPTION in
   1)
-    echo "Select the environment: "
-    echo -e "1) ${YELLOW}HML${RESET}"
-    echo -e "2) ${RED}PRD${RESET}"
-    read -rp "Enter your option: " ENV
+    center_text "Select the environment: "
+    center_text "${CYAN}(1)${RESET} HML ${CYAN}(2)${RESET} PRD"
+    center_read "Option: " ENV
     set_profile $ENV
 
     submenu_clusters
